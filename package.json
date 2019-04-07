@@ -1,0 +1,29 @@
+{
+    "name": "react-full-stack-sample",
+    "private": true,
+    "devDependencies": {
+        "lerna": "^3.13.1"
+    },
+    "scripts": {
+        "clean": "lerna clean && rm -rf node_modules",
+        "build:backend": "cd packages/backend && yarn build",
+        "build:frontend": "cd packages/frontend && yarn build",
+        "start:backend": "cd packages/backend && yarn start",
+        "watch:backend": "cd packages/backend && yarn watch",
+        "start:frontend": "cd packages/frontend && yarn start",
+        "test:frontend": "cd packages/frontend && yarn test",
+        "start:db": "docker-compose up postgres",
+        "stop:db": "docker-compose down",
+        "reset:db": "docker-compose down && rm -rf database",
+        "start:docker": "docker-compose up",
+        "stop:docker": "docker-compose down",
+        "purge:docker": "docker rm $(docker ps -a -q) && docker rmi -f $(docker images -q)"
+    },
+    "workspaces": [
+        "packages/*"
+    ],
+    "engineStrict": true,
+    "engines": {
+        "node": "10.15.3"
+    }
+}

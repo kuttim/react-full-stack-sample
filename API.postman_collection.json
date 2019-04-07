@@ -1,0 +1,118 @@
+{
+    "info": {
+        "_postman_id": "c0945087-99d9-4636-a058-367c88924b4b",
+        "name": "React Full Stack Sample",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Get all users",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "http://localhost:4000/users",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "4000",
+                    "path": ["users"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get user by id",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "http://localhost:4000/users/2",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "4000",
+                    "path": ["users", "2"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Create new user",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n\t\"name\": \"John Doe\",\n\t\"username\": \"j.doe\",\n\t\"email\": \"j.doe@googlemail.com\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:4000/users",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "4000",
+                    "path": ["users"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Delete a user by id",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "http://localhost:4000/users/1",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "4000",
+                    "path": ["users", "1"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Update a user by id",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n\t\"id\": 1,\n\t\"name\": \"JJ Doe\",\n\t\"username\": \"jj.doe\",\n\t\"email\": \"jj.doe@googlemail.com\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:4000/users/1",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "4000",
+                    "path": ["users", "1"]
+                }
+            },
+            "response": []
+        }
+    ]
+}

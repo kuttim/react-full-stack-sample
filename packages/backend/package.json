@@ -1,0 +1,54 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "private": true,
+    "main": "./src/Server.ts",
+    "module": "./src/Server.ts",
+    "files": [
+        "src"
+    ],
+    "devDependencies": {
+        "@types/cors": "^2.8.4",
+        "@types/debug": "^4.1.3",
+        "@types/express": "^4.11.1",
+        "@types/helmet": "^0.0.43",
+        "@types/node": "^11.12.0",
+        "nodemon": "^1.18.10",
+        "ts-node": "^8.0.3",
+        "tslint": "^5.14.0",
+        "tslint-microsoft-contrib": "^6.1.0",
+        "typescript": "^3.3.4000"
+    },
+    "dependencies": {
+        "body-parser": "^1.18.3",
+        "cors": "^2.8.5",
+        "debug": "^4.1.1",
+        "express": "^4.16.4",
+        "helmet": "^3.16.0",
+        "http-status-codes": "^1.3.2",
+        "pg": "^7.9.0",
+        "reflect-metadata": "^0.1.13",
+        "typeorm": "^0.2.16"
+    },
+    "scripts": {
+        "build": "tsc",
+        "clean": "rm -rf build",
+        "start": "DEBUG=api:* node build/Server.js",
+        "dev": "DEBUG=api:* node --inspect -r ts-node/register src/Server.ts",
+        "watch": "nodemon"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "**/*.test.ts",
+            ".git",
+            "node_modules"
+        ],
+        "watch": [
+            "src",
+            ".env"
+        ],
+        "exec": "yarn dev",
+        "ext": "ts",
+        "inspect": true
+    }
+}
