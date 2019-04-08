@@ -35,3 +35,10 @@ services:
       - ./database:/var/lib/postgresql/data
     # tmpfs:
     #   - /var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    links:
+      - postgres
