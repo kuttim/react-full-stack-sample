@@ -13,7 +13,7 @@
 >
 > It is highly suggested to not install Yarn globally on the system but in combination with NVM as described in the section *Local development*.
 
-* [**Visual Studio Code (VS Code)**](https://code.visualstudio.com/) - it is recommended to develop using VS Code instead of Webstorm or other editor if you happen to be inexperienced since this repository comes with some pre-configured debugging settings that currently work only in VS Code.
+* [**Visual Studio Code (VS Code)**](https://code.visualstudio.com/) (*Optional*) - it is recommended to develop using VS Code instead of Webstorm or other editor if you happen to be inexperienced since this repository comes with some pre-configured debugging settings that currently work only in VS Code.
 * [**Postman**](https://www.getpostman.com/) (*Optional*) - it is highly recommended to use Postman to test the API endpoints exposed by the backend without the need to use `curl` or "debug" via the frontend. A set of sample API calls can be imported from the `API.postman_collection.json` file into Postman.
 
 ## Deployment via Docker
@@ -22,7 +22,7 @@
 >
 > This section is still a **work-in-progress** since the deployment settings and configuration aren't finalized. We're still missing some robust handling of detection whether the frontend is running in a container (to adjust endpoint URLs) as well as inclusion of the Let's Encrypt's certification service to enable HTTPS inside Nginx.
 >
-> For the former point we'll most likely need to adapt the TypeORM configuration to be able to replace the hardcoded `localhost` path with the Docker service name that we're linking to. In the frontend a "basic" `window.location.hostname` might already suffice but that remains to be tested.
+> For the former point we'll most likely need to adapt the TypeORM configuration to be able to replace the hard coded `localhost` path with the Docker service name that we're linking to. In the frontend a "basic" `window.location.hostname` might already suffice but that remains to be tested.
 
 ### Starting
 
@@ -42,16 +42,21 @@ This method runs the backend server and the client in debug mode without product
 
 > **Note**
 >
-> Since this sample repository will receive some further tweask and hence isn't finalized yet, it is recommended to fork the repository instead of cloning it locally, otherwise you won't receive upstream changes to the configuration etc.
+> Since this sample repository will receive some further tweaks and hence isn't finalized yet, it is recommended to fork the repository instead of cloning it locally, otherwise you won't receive upstream changes to the configuration etc.
 
-### Initial installation and configuration after cloning the repository
+### Initial installation and configuration after forking/cloning the repository
 
 1. Run `nvm use` in order to enable Node 10.15.3 as the current Node version. If you happen to get the error message `N/A: version "10.15.3 -> N/A" is not yet installed` just execute a `nvm install 10.15.3` in order to install the required version.
+
 2. If you haven't installed Yarn for the current Node version run `npm i -g yarn` to associate a fresh installation of Yarn with the current Node version. Even though we're using the `-g` argument Yarn won't be installed system-wide, only for Node 10.15.3 using NVM.
+
 3. In the root folder, run `yarn` and let Yarn install, hoist and link all required packages.
+
 4. Perform the initial configuration of environment variables
+
     1. Head to the `docker/postgres` folder and copy the `.env.example` file and name it `.env`. Configure your desired `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB` values for the Postgres server.
-    2. Similarly, head to the `packages/backend` folder and copy the `.env.example` file to a new file called `.env`. Set the `TYPEORM_USERNAME`, `TYPEORM_PASSWORD` and `TYPEORM_DATABASE` variables to the very same values you just saved to the Postgres environment file. Leave the other variables untouched for the time being.
+
+    2. Similarly, head to the `packagesbackendd` folder and copy the `.env.example` file to a new file called `.env`. Set the `TYPEORM_USERNAME`, `TYPEORM_PASSWORD` and `TYPEORM_DATABASE` variables to the very same values you just saved to the Postgres environment file. Leave the other variables untouched for the time being.
 
 > **Note**
 >
@@ -60,24 +65,33 @@ This method runs the backend server and the client in debug mode without product
 ### Starting
 
 1. Make sure to have the correct Node version enabled by running `nvm use`.
+
 2. Run `yarn start:db` to boot up the Postgres database server.
 
 > **Note**
 >
-> In the `docker-compose.yaml` file the `postgres` service is setup to associate a local physical folder called `database` to the container to persist data even through restarts which mimicks the behaviour on a production server. Comment out the `volumes` section and uncomment the `tmpfs` section to enable temporary in-memory storage of the data.
+> In the `docker-compose.yaml` file the `postgres` service is setup to associate a local physical folder called `database` to the container to persist data even through restarts which mimics the behaviour on a production server. Comment out the `volumes` section and uncomment the `tmpfs` section to enable temporary in-memory storage of the data.
 
-3. Running the backend server:
+3. *Optional*: If you're not using external database management tool such as DataGrip you can use [Adminer](https://www.adminer.org/) which comes bundled with this repository. Just execute `yarn start:adminer` to boot the tool and head to `http://localhost:8080` in your browser.
+
+> **Note**
+>
+> When connecting to your Postgres instance via Adminer, make sure you enter `postgres` instead of `localhost` as the server URL since Adminer will be automatically linked by Docker to Postgres using this server name.
+
+4. Running the backend server:
 
     - Run **either** `yarn start:backend` in a separate terminal to boot up the backend server;
 
-    - **Or** run `yarn watch:backend` in a VS Code intergrated terminal window which will not only watch file changes and automatically reload the server but enable the debug capabilities of VS Code.
+    - **Or** run `yarn watch:backend` in a VS Code integrated terminal window which will not only watch file changes and automatically reload the server but enable the debug capabilities of VS Code.
 
-4. Run `yarn start:frontend` in a separate terminal to boot up the React client in the browser and watch for file changes.
+5. Run `yarn start:frontend` in a separate terminal to boot up the React client in the browser and watch for file changes.
 
 ### Stopping
 
 1. Just Ctrl+C the `frontend`, `backend` and `postgres` processes.
-2. Stop Postgres by executing `yarn stop:db`.
+
+2. Stop the entire Dockerinfrastructurer by executing `yarn stop:docker`.
+
 3. *Optional*: Run `yarn reset:db` to delete the `database` folder which persists data through restarts of the Postgres server if you wan to clean up the database.
 
 ## Security
@@ -86,11 +100,11 @@ Please keep in mind that the Docker containers, especially the Postgres instance
 
 ## Architecture
 
-### **React frontend**
+### React frontend
 
 For this application the current implementation of the frontend is using [React](https://reactjs.org/) and leverages the capabilities of [axios](https://github.com/axios/axios) as the HTTP client of our choice. Routing is made available via the [React Router](https://reacttraining.com/react-router/web/guides/quick-start) package. In combination with the [typescript-plugin-css-modules](https://github.com/mrmckeb/typescript-plugin-css-modules) TypeScript server plugin VS Code is able to provide code completion for imported SCSS files.
 
-### **Express backend**
+### Express backend
 
 The backend is based on the [Express](https://expressjs.com/) web application framework in conjunction with some generic middleware such as [Helmet](https://helmetjs.github.io/) to secure the server, [body-parser](https://github.com/expressjs/body-parser) to parse incoming requests (duh) as well as [cors](https://github.com/expressjs/cors) for CORS configuration. At its very core we're running [TypeORM](https://typeorm.io/) to access the database without the need to write complex SQL queries.
 
@@ -108,7 +122,7 @@ Currently the "features" include the following:
     * `DELETE /users/:id`: Deletes the user with the specified id.
     * `PUT /users/:id`: Replace (update) the data of the user with the specified id using the data in the request body.
 * In order to show how to store data on the server that is not exposed to the clients we're using `UserDto` (`models/dtos/UserDto.ts`) objects to represent data that is sent to client. In our sample these hide the `password` field.
-* For the frontend there exists a `Routes.ts` file which simplifies the definition of routes as the `App` component (`components/App/App.tsx`) will automatically create a `BrowserRouter` based on the configure routes.
+* For the frontend there exists a `Routes.ts` file which simplifies the definition of routes as the `App` component (`components/App/App.tsx`) will automatically create a `BrowserRouter` based on the configured routes.
 * The `Home` component (`components/Home/Home.tsx`) contains a simple button in order to show how to add routing and redirects to event handlers. This button will redirect to the `/users` page which renders the `UserList` component (`components/UserList/UserList.tsx`).
 * Ultimately the `UserList` component will either display a list of all users, fetched from the API, or display information about a single user, depending on the request parameters as its route is defined as `/users/:id?`. This component shows you how to read certain using the React Router functions.
 
@@ -118,6 +132,7 @@ Currently the "features" include the following:
 * Packages that are only required during compilation and for building anything should be installed as `devDependencies` using the `-D` flag. Everything else that has to be accessible during runtime (especially in the container) **MUST** be installed as a proper `dependency` **without** the `-D` flag.
 * If VS Code complains about any package not having typings available install them via `yarn add -D @types/is-thirteen`.
 * This repository has some opinionated configurations for Prettier and TSLint. Please adjust them at your own leisure by editing `.editorconfig`, `.prettierc` and `packages/tslint.json`. If you want to install custom linter rules such as the [TSLint Config Airbnb](https://github.com/progre/tslint-config-airbnb/), it's recommended to install the new rules for all packages separately and adjust the `extends` and `rulesDirectory` keys in the `packages/tslint.json`.
+* If VS Code happens to have some TypeScript related hickups, just open any TypeScript file and hit the Command+Shift+P keybind and select `TypeScript: Restart TS server`.
 
 ## Resources
 
