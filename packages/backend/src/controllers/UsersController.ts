@@ -5,7 +5,7 @@ import { UserEntity } from "../models/entities/UserEntity";
 import { createLogger } from "../utils/LoggerUtil";
 import { Omit } from "../utils/TypeScriptUtils";
 
-// Small helper type to embed id paramters into custom types.
+// Small helper type to embed id parameters into custom types.
 type WithId = {
     id: number;
 };
